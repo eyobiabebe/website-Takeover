@@ -18,7 +18,7 @@ const VerifyEmail = () => {
     const verifyEmail = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/users/verify-email/${token.trim()}`
+          `https://backend-takeover-4.onrender.com/api/users/verify-email/${token.trim()}`
         );
         setMessage(res.data.message);
         setStatus("success");

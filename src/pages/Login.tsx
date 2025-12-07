@@ -39,12 +39,16 @@ const Login = () => {
     setErrors({})
 
     try {
-      const res = await axios.post("/api/users/login", {
+      console.log("backend url: ",import.meta.env.VITE_BACKEND_URL);
+      
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, {
         email: formData.email,
         password: formData.password,
       },
         { withCredentials: true } // ✅ ensures cookie is saved
       );
+
+      console.log(res);
 
       if (res.status === 200) {
         console.log("✅ Login successful:", res.data);
@@ -80,7 +84,7 @@ const Login = () => {
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
       const res = await axios.post(
-        `/api/users/google-mobile`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/google-mobile`,
         { token: credentialResponse.credential }, { withCredentials: true }
       );
 

@@ -43,7 +43,7 @@ function App() {
     const checkSession = async () => {
       try {
         // ✅ axios must send cookies
-        const res = await axios.get("/api/users/me", {
+        const res = await axios.get("https://backend-takeover-4.onrender.com/api/users/me", {
           withCredentials: true,
         });
 
