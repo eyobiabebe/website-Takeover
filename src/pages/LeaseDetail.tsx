@@ -41,7 +41,6 @@ interface Lease {
   sqft: number;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const LeaseDetail: React.FC = () => {
   const { leaseId } = useParams<{ leaseId: string }>();

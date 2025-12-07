@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { checkProfileComplete } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import CompleteProfile from "./CompleteProfile";
 

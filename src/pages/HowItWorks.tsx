@@ -1,5 +1,4 @@
 
-import { motion } from "framer-motion";
 import {
   UserPlus,
   User,
@@ -12,292 +11,71 @@ import {
   Tag,
   Users,
   ChartPie,
-  DollarSign,
+  DollarSign
 } from "lucide-react";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
+// Step props type
+interface StepProps {
+  index: number;
+  Icon: React.ComponentType<{ size?: number }>;
+  title: string;
+  summary: string;
+  details: string;
+}
 
-const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 24 },
-  },
-  hover: {
-    scale: 1.02,
-    transition: { type: "spring", stiffness: 400 },
-  },
-};
-
-const Step = ({ index, Icon, title, summary, details }) => (
-  <motion.li
-    variants={item}
-    whileHover="hover"
-    className="relative bg-white/60 dark:bg-slate-800/60 backdrop-blur-md 
-      border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm 
-      hover:shadow-lg transition-shadow"
-    aria-label={`${index + 1}. ${title}`}
-  >
-    <div className="flex items-start gap-4">
-      <div className="flex-none w-12 h-12 rounded-xl bg-gradient-to-br 
-        from-indigo-500 to-purple-500 text-white flex items-center justify-center">
-        <Icon size={20} />
-      </div>
-
-      <div className="min-w-0">
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-            {index + 1}. {title}
-          </h3>
-          <span className="text-xs text-slate-500 dark:text-slate-400">{summary}</span>
-        </div>
-
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          {details}
-        </p>
-      </div>
+// Simple Step component
+const Step: React.FC<StepProps> = ({ index, Icon, title, summary, details }) => (
+  <li className="border-b border-gray-300 py-3 flex items-start gap-3">
+    <div className="flex-none">
+      <Icon size={20} />
     </div>
-  </motion.li>
+    <div>
+      <h3 className="font-semibold">{index + 1}. {title} <span className="text-sm text-gray-500">({summary})</span></h3>
+      <p className="text-sm text-gray-700">{details}</p>
+    </div>
+  </li>
 );
 
 export default function HowItWorks() {
-  // ---------------- GET IN ----------------
-  const getInSteps = [
-    {
-      title: "Create your account",
-      summary: "Sign up & verify",
-      Icon: UserPlus,
-      details:
-        "Register with email or SSO, verify your contact. A clear profile photo increases trust and response rate.",
-    },
-    {
-      title: "Complete your profile",
-      summary: "Add details & docs",
-      Icon: User,
-      details:
-        "Fill personal info, preferences, and upload required documents like ID or proof of income.",
-    },
-    {
-      title: "Browse & filter listings",
-      summary: "Filter by type, date, location",
-      Icon: LayoutList,
-      details:
-        "Use filters (lease type, start date, price, pet policy). Save searches and favorite listings.",
-    },
-    {
-      title: "View lease details",
-      summary: "Inspect terms & docs",
-      Icon: FileText,
-      details:
-        "Read full lease summary, costs, photos, and uploaded lease PDF before applying.",
-    },
-    {
-      title: "Chat with the tenant",
-      summary: "Ask clarifying questions",
-      Icon: MessageSquare,
-      details:
-        "Use the chat to clarify move-out timeline, utilities, parking, or request extra photos.",
-    },
-    {
-      title: "Apply to takeover",
-      summary: "Submit application",
-      Icon: Tag,
-      details:
-        "Submit takeover application, attach verification docs, provide intro + move-in date.",
-    },
-    {
-      title: "Tenant accepts & paperwork",
-      summary: "Agree terms & e-sign",
-      Icon: CheckCircle,
-      details:
-        "If accepted, follow instructions to finish paperwork and complete takeover agreement.",
-    },
-    {
-      title: "Finalization & confirmation",
-      summary: "Download PDF",
-      Icon: DownloadCloud,
-      details:
-        "Once done, you'll receive a completion notification and downloadable PDF summary.",
-    },
+  const getInSteps: StepProps[] = [
+    { index: 0, Icon: UserPlus, title: "Create your account", summary: "Sign up & verify", details: "Register with email or SSO, verify your contact info." },
+    { index: 1, Icon: User, title: "Complete your profile", summary: "Add details & docs", details: "Fill personal info, preferences, and upload required documents." },
+    { index: 2, Icon: LayoutList, title: "Browse & filter listings", summary: "Filter by type, date, location", details: "Use filters and sorting. Save searches and favorite listings for quick access." },
+    { index: 3, Icon: FileText, title: "View lease details", summary: "Inspect terms & docs", details: "Check full lease, costs, photos, and PDF documents." },
+    { index: 4, Icon: MessageSquare, title: "Chat with the tenant", summary: "Ask clarifying questions", details: "Ask about parking, utilities, or move-out timelines." },
+    { index: 5, Icon: Tag, title: "Apply to takeover", summary: "Submit application & docs", details: "Attach verification docs, desired move-in date, and optional references." },
+    { index: 6, Icon: CheckCircle, title: "Tenant accepts & complete paperwork", summary: "Agree terms & e-sign", details: "Receive confirmation and instructions. E-sign documents." },
+    { index: 7, Icon: DownloadCloud, title: "Finalization & confirmation", summary: "Mark complete & download PDF", details: "Both parties get a completion notification and PDF record." }
   ];
 
-  // ---------------- GET OUT ----------------
-  const getOutSteps = [
-    {
-      title: "Start by signing up",
-      summary: "Create & verify",
-      Icon: UserPlus,
-      details:
-        "Outgoing tenants must create and verify their profile. Verified profiles attract more applicants.",
-    },
-    {
-      title: "Create a listing",
-      summary: "Add lease information",
-      Icon: FileText,
-      details:
-        "Add all lease info: dates, price, utilities, deposit, parking, and any special clauses.",
-    },
-    {
-      title: "Save draft or continue",
-      summary: "Save progress",
-      Icon: CreditCard,
-      details:
-        "Save your draft and resume later. Continue to the listing fee (if applicable).",
-    },
-    {
-      title: "Pay listing fee & publish",
-      summary: "Make listing live",
-      Icon: DollarSign,
-      details:
-        "Pay securely (if required). Your listing goes live with a public URL.",
-    },
-    {
-      title: "Manage applicants",
-      summary: "Dashboard & chat",
-      Icon: Users,
-      details:
-        "View applicants, open chats, request more info, and shortlist candidates.",
-    },
-    {
-      title: "Accept applicant",
-      summary: "Choose best match",
-      Icon: CheckCircle,
-      details:
-        "Review profiles and references. Accept the best candidate and schedule a meeting.",
-    },
-    {
-      title: "Complete paperwork & checks",
-      summary: "Verify identity",
-      Icon: ChartPie,
-      details:
-        "Finalize takeover agreement and complete verification with property manager if needed.",
-    },
-    {
-      title: "Mark listing complete",
-      summary: "Notify system",
-      Icon: DownloadCloud,
-      details:
-        "Once handover is done, mark listing complete. Both parties receive a final PDF confirmation.",
-    },
+  const getOutSteps: StepProps[] = [
+    { index: 0, Icon: UserPlus, title: "Start by signing up", summary: "Create & verify profile", details: "Create an account and verify your contact info." },
+    { index: 1, Icon: FileText, title: "Create a listing", summary: "Add lease information", details: "Add listing and fill all lease fields." },
+    { index: 2, Icon: CreditCard, title: "Save draft or continue", summary: "Save progress", details: "Save a draft or continue to payment stage if needed." },
+    { index: 3, Icon: DollarSign, title: "Pay listing fee & publish", summary: "Secure listing slot", details: "Pay securely to feature your listing." },
+    { index: 4, Icon: Users, title: "Manage applicants", summary: "Dashboard & chat", details: "View applicants, open chats, request info, and shortlist candidates." },
+    { index: 5, Icon: CheckCircle, title: "Accept applicant", summary: "Choose the best candidate", details: "Accept the applicant that best matches criteria." },
+    { index: 6, Icon: ChartPie, title: "Complete paperwork & checks", summary: "Meet & verify", details: "Finalize documents and complete any verification." },
+    { index: 7, Icon: DownloadCloud, title: "Mark listing complete", summary: "Notify the system", details: "Mark the listing complete and generate PDF confirmation." }
   ];
 
-  // ---------------- COMPONENT RETURN ----------------
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white 
-      dark:from-slate-900 dark:to-slate-950 py-20 px-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="max-w-3xl mx-auto py-10 px-4">
+      <h1 className="text-xl font-bold mb-6">How it works — Lease Takeover</h1>
 
-        {/* HEADER */}
-        <motion.header
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
-        >
-          <h1 className="text-xl sm:text-2xl font-extrabold bg-clip-text 
-            text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-            How it works — Lease Takeover
-          </h1>
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold mb-3">To get in</h2>
+        <ul className="space-y-2">
+          {getInSteps.map(step => <Step key={step.index} {...step} />)}
+        </ul>
+      </section>
 
-          <p className="mt-3 text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Step-by-step flows for tenants looking to take over a lease ("Get in") 
-            and outgoing tenants listing their lease ("Get out").
-          </p>
-        </motion.header>
-
-        {/* CONTENT */}
-        <motion.main
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-        >
-          {/* ---------------- GET IN ---------------- */}
-          <section aria-labelledby="get-in" className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-indigo-50 text-indigo-600">
-                <ChartPie size={22} />
-              </div>
-              <div>
-                <h2 id="get-in" className="text-lg font-semibold">
-                  To get in
-                </h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Everything a prospective taker should know.
-                </p>
-              </div>
-            </div>
-
-            <motion.ul className="space-y-4">
-              {getInSteps.map((s, i) => (
-                <Step key={i} index={i} {...s} />
-              ))}
-            </motion.ul>
-
-            <div className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-              <strong>Pro tips:</strong>
-              <ul className="list-disc ml-5 mt-2">
-                <li>Verify payment expectations before moving in.</li>
-                <li>Request the original lease and landlord approvals.</li>
-                <li>Save chat records in case of disputes.</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* ---------------- GET OUT ---------------- */}
-          <section aria-labelledby="get-out" className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-emerald-50 text-emerald-600">
-                <Users size={22} />
-              </div>
-              <div>
-                <h2 id="get-out" className="text-lg font-semibold">
-                  To get out
-                </h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  List your lease and manage handover confidently.
-                </p>
-              </div>
-            </div>
-
-            <motion.ul className="space-y-4">
-              {getOutSteps.map((s, i) => (
-                <Step key={i} index={i} {...s} />
-              ))}
-            </motion.ul>
-
-            <div className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-              <strong>Pro tips:</strong>
-              <ul className="list-disc ml-5 mt-2">
-                <li>Add clear photos + signed lease pages.</li>
-                <li>Offer a short video walkthrough.</li>
-                <li>Keep a checklist for handover items.</li>
-              </ul>
-            </div>
-          </section>
-        </motion.main>
-
-        {/* FOOTER */}
-        <motion.footer
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mt-12 text-center text-sm text-slate-500 dark:text-slate-400"
-        >
-          <div className="max-w-3xl mx-auto">
-            <p>
-              Note: This guide provides general assistance. Always check your lease 
-              agreement and local laws for specific requirements.
-            </p>
-          </div>
-        </motion.footer>
-
-      </div>
+      <section>
+        <h2 className="text-lg font-semibold mb-3">To get out</h2>
+        <ul className="space-y-2">
+          {getOutSteps.map(step => <Step key={step.index} {...step} />)}
+        </ul>
+      </section>
     </div>
   );
 }
