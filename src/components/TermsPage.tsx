@@ -4,8 +4,6 @@ import {
   Menu,
   ChevronDown,
   Mail,
-  FileText,
-  Printer,
   Clipboard,
 } from "lucide-react";
 

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import React, { useEffect,  useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Calendar, MapPin, DollarSign, Send } from "lucide-react";
+import { Calendar, MapPin, DollarSign } from "lucide-react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
@@ -36,7 +36,7 @@ const Takeover: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [isProceed, setIsProceed] = useState(false);
 
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchLease = async () => {
@@ -89,6 +89,7 @@ const Takeover: React.FC = () => {
   }
 
   const handlePayment = async () => {
+    setLoading(true);   
     setIsProceed(false);
     try {
       const res = await axios.post("/api/takeover/findtakeover", { listingId: lease.id, userId: userId })

@@ -1,36 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
-import axios from "axios";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const CancelPage = () => {
   const navigate = useNavigate();
   const { title } = useParams<{ title: string }>();
-  const userId = useSelector((state: any) => state.auth.user?.id);
+ 
 
-  // useEffect(() => {
-  //   const handleContinue = async () => {
-  //     try {
-  //       const res = await axios.post("/api/takeover/proceed", { leaseId, userId });
-
-  //       if (res.status === 200) {
-
-  //         const timer = setTimeout(() => {
-  //           navigate("/dashboard");
-  //         }, 3000); // 3000ms = 3 seconds
-
-  //         // Cleanup timer when component unmounts
-  //         return () => clearTimeout(timer);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to navigate:", error);
-  //     }
-  //   };
-
-  //   handleContinue();
-
-  // }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {

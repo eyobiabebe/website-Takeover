@@ -37,8 +37,7 @@ const LeaseLists: React.FC = () => {
   const [listings, setListings] = useState<Listing[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [search, setSearch] = useState("");
-  const [priceFilter, setPriceFilter] = useState<"none" | "gt" | "lt">("none");
-  const [targetPrice, setTargetPrice] = useState<number | "">("");
+  
   const [locationFilter, setLocationFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
@@ -136,10 +135,8 @@ const LeaseLists: React.FC = () => {
       field?.toLowerCase().includes(search.toLowerCase())
     );
 
-    const matchPrice =
-      priceFilter === "none" ||
-      (priceFilter === "gt" && l.monthlyPrice > Number(targetPrice)) ||
-      (priceFilter === "lt" && l.monthlyPrice < Number(targetPrice));
+    const matchPrice = l.monthlyPrice >= minPrice && l.monthlyPrice <= maxPrice;
+
 
     const matchLocation =
       locationFilter === "" ||

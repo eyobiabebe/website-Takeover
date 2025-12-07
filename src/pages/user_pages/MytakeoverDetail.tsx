@@ -1,18 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { useEffect,  useState } from "react";
+import { motion, type Variants } from "framer-motion";
 import {
     Calendar,
     MapPin,
     BedDouble,
     Bath,
-    Users,
     DollarSign,
-    Clock,
-    Mail,
     Building2,
-    Search,
-    CheckCircle2,
-    XCircle,
     Send,
     PartyPopper,
 } from "lucide-react";
@@ -66,13 +60,7 @@ function formatMoney(n: number) {
     }).format(n);
 }
 
-function initials(name: string) {
-    const parts = name.split(" ");
-    return parts
-        .slice(0, 2)
-        .map((p) => p[0]?.toUpperCase())
-        .join("");
-}
+
 
 const statusBadge: Record<TakeOver["status"], string> = {
     pending: "bg-green-100 text-green-700 border-green-200",
@@ -101,10 +89,9 @@ const item: Variants = {
 
 export default function MyTakeoverDetail() {
     const { id } = useParams<{ id: string }>();
-    const [query, setQuery] = useState("");
+
     const [loading, setLoading] = useState(false);
     const [takeover, setTakeover] = useState<TakeOver | null>(null);
-    const [statusFilter, setStatusFilter] = useState<"all" | TakeOver["status"]>("all");
     const userId = useSelector((state: any) => state.auth.user?.id);
     const [isProceed, setIsProceed] = useState(false);
     const navigate = useNavigate()

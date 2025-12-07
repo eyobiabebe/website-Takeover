@@ -66,15 +66,7 @@ const MyTakeovers: React.FC = () => {
     );
   }
 
-  const handleProceed = async (id: number) => {
-    const isProfileComplete = await checkProfileComplete(userId);
-    if (!isProfileComplete) {
-      navigate(`/takeover/${id}`);
-    } else {
-      // Handle incomplete profile case
-      setIsWarningOpen(true);
-    }
-  }
+
 
   return (
     <div className="min-h-screen mx-auto p-4 ">
