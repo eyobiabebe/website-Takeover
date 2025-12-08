@@ -51,7 +51,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const markAllAsRead = async () => {
     try {
-      await axios.put(`/api/notifications/${userId}/read-all`);
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}/read-all`);
       setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (err) {
       console.error("Failed to mark all as read", err);
