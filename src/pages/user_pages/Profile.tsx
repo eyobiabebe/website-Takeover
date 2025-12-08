@@ -117,7 +117,9 @@ const Profile = () => {
     try {
 
       console.log("Profile update data:", { userId: user?.id, data: form });
-      const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id, data: form });
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, 
+        { userId: user?.id, data: form },
+        { withCredentials: true });
 
       console.log("Profile update response:", res.data);
 
