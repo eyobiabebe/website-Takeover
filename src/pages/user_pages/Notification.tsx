@@ -31,7 +31,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
   const fetchNotifications = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`/api/notifications/${userId}`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}`);
       setNotifications(res.data);
     } catch (err) {
       console.error("Failed to fetch notifications", err);
