@@ -59,7 +59,7 @@ const LeaseDetail: React.FC = () => {
   useEffect(() => {
     const fetchLease = async () => {
       try {
-        const res = await axios.get(`/api/listings/${leaseId}`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`, {
           withCredentials: true
         });
         setLease(res.data);

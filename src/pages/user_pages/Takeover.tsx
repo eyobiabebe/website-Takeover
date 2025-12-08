@@ -41,7 +41,7 @@ const Takeover: React.FC = () => {
   useEffect(() => {
     const fetchLease = async () => {
       try {
-        const res = await axios.get(`/api/listings/${leaseId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`);
         setLease(res.data);
       } catch (error) {
         console.error("Failed to fetch lease:", error);
@@ -56,7 +56,7 @@ const Takeover: React.FC = () => {
     const getProfile = async () => {
       if (!userId) return;
       try {
-        const res = await axios.post("/api/profile/userProfile", { userId });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/userProfile`, { userId });
         setProfile(res.data);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -92,10 +92,10 @@ const Takeover: React.FC = () => {
     setLoading(true);   
     setIsProceed(false);
     try {
-      const res = await axios.post("/api/takeover/findtakeover", { listingId: lease.id, userId: userId })
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/findtakeover`, { listingId: lease.id, userId: userId })
       const takeover_id = res.data.id;
       // Call backend to create a Stripe checkout session
-      const { data } = await axios.post("/api/payments/create-takeover-checkout", {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`, {
         leaseId: lease.id,
         takeover_id: takeover_id,
         title: "Lease Takeover Fee",

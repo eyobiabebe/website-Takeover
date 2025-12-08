@@ -40,7 +40,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const markAsRead = async (id: number) => {
     try {
-      await axios.patch(`/api/notifications/read/${id}`);
+      await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/read/${id}`);
       setNotifications(prev =>
         prev.map(n => (n.id === id ? { ...n, isRead: true } : n))
       );
@@ -60,7 +60,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const deleteNotification = async (id: number) => {
     try {
-      await axios.delete(`/api/notifications/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${id}`);
       setNotifications(prev => prev.filter(n => n.id !== id));
     } catch (err) {
       console.error("Failed to delete notification", err);
@@ -72,7 +72,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
     fetchNotifications();
 
-    const socket = io("http://localhost:3000");
+    const socket = io("https://backend-takeover-4.onrender.com");
     socketRef.current = socket;
 
     socket.emit("register", userId);

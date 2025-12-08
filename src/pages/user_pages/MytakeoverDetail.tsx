@@ -102,7 +102,7 @@ export default function MyTakeoverDetail() {
             try {
                 console.log(id);
 
-                const res = await axios.get(`/api/takeover/${id}`);
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/${id}`);
                 setTakeover(res.data);
                 console.log("Takeover data:", res.data);
             } catch (error) {
@@ -133,7 +133,7 @@ export default function MyTakeoverDetail() {
         setIsProceed(false);
         try {
             // Call backend to create a Stripe checkout session
-            const { data } = await axios.post("/api/payments/create-takeover-checkout", {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`, {
                 leaseId: takeover?.listing.id,
                 takeover_id: takeover?.id,
                 title: "Lease Takeover Fee",

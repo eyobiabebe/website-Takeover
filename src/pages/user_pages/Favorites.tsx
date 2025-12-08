@@ -47,7 +47,7 @@ const Favorites: React.FC = () => {
       if (!userId) return;
       setLoading(true);
       try {
-        const res = await axios.get(`/api/favorites/${userId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/favorites/${userId}`);
         setFavorites(res.data);
       } catch (err) {
         console.error("Failed to fetch favorites:", err);
@@ -61,7 +61,7 @@ const Favorites: React.FC = () => {
   const toggleFavorite = async (listingId: number) => {
     if (!userId) return;
     try {
-      const res = await axios.post("/api/favorites", { userId, listingId });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, { userId, listingId });
       const { favorited } = res.data;
 
       if (!favorited) {

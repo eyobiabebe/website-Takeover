@@ -41,7 +41,7 @@ function Messages() {
 
   // --- Socket.IO setup ---
   useEffect(() => {
-    socket = io("http://localhost:3000"); // your backend socket server
+    socket = io("https://backend-takeover-4.onrender.com"); // your backend socket server
     socket.on("connect", () => {
       console.log("Connected to socket server:", socket.id);
     });
@@ -72,7 +72,7 @@ function Messages() {
 
     const fetchOrCreateConversation = async () => {
       try {
-        const res = await axios.post("/api/conversations/get-or-create", {
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations/get-or-create`, {
           listingId: Number(listingId),
           senderId: userId,
           receiverId,
@@ -102,7 +102,7 @@ function Messages() {
 
   const loadConversations = async () => {
     try {
-      const res = await axios.post("/api/conversations", { id: userId });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations`, { id: userId });
       setConversations(res.data || []);
     } catch (error) {
       console.error('Error loading conversations:', error);
@@ -113,7 +113,7 @@ function Messages() {
 
   const loadMessages = async (conversationId: number) => {
     try {
-      const res = await axios.post(`/api/messages/${conversationId}`, { id: userId });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conversationId}`, { id: userId });
       setMessages(res.data.messages || []);
     } catch (error) {
       console.error('Error loading messages:', error);

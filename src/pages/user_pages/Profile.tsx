@@ -67,7 +67,7 @@ const Profile = () => {
       try {
         console.log(user.id);
         
-        const res = await axios.post('/api/profile', { userId: user?.id });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id });
         setProfile(res.data.profile);
         setProfileImg(res.data.profile_image.image);
         setPreview(`${res.data.profile_image.image}`);
@@ -117,7 +117,7 @@ const Profile = () => {
     try {
 
       console.log("Profile update data:", { userId: user?.id, data: form });
-      const res = await axios.put('/api/profile', { userId: user?.id, data: form });
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id, data: form });
 
       console.log("Profile update response:", res.data);
 
@@ -166,7 +166,7 @@ const Profile = () => {
     formData.append("userId", user?.id || "");
 
     try {
-      const res = await axios.post("/api/profile/upload-image", formData, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/upload-image`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

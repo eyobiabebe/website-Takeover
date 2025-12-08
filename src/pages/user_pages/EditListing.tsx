@@ -59,7 +59,7 @@ const EditListing: React.FC = () => {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await axios.get(`/api/listings/${id}`, { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`, { withCredentials: true });
         const listing = res.data;
 
         setFormData({
@@ -245,7 +245,7 @@ const EditListing: React.FC = () => {
     });
 
     try {
-      await axios.put(`/api/listings/${id}`, form, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });

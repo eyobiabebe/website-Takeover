@@ -41,7 +41,7 @@ const Signup = () => {
 
   try {
     console.log("hi signup");
-    const res = await axios.post(`https://backend-takeover-4.onrender.com/api/users/register`, {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, {
       name: formData.name,
       email: formData.email,
       password: formData.password,

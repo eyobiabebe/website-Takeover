@@ -246,7 +246,7 @@ const AddListing: React.FC = () => {
     });
 
     try {
-      const res = await axios.post('/api/listings', form, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/listings`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

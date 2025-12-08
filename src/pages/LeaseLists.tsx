@@ -53,7 +53,7 @@ const LeaseLists: React.FC = () => {
     const fetchListings = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("/api/listings");
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings`);
 
         setListings(res.data);
         console.log("user id:", userId, typeof userId);
@@ -74,7 +74,7 @@ const LeaseLists: React.FC = () => {
     if (!userId) return; // don’t run until session is loaded
     const fetchFavorites = async () => {
       try {
-        const res = await axios.get(`/api/favorites/${userId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/favorites/${userId}`);
         setFavorites(res.data.map((f: { listingId: number }) => f.listingId));
       } catch (err) {
         console.error("Failed to fetch favorites:", err);
@@ -92,7 +92,7 @@ const LeaseLists: React.FC = () => {
     }
 
     try {
-      const res = await axios.post("/api/favorites", { userId, listingId });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, { userId, listingId });
       const { favorited } = res.data;
 
       if (favorited) {
