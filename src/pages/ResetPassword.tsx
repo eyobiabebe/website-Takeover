@@ -13,6 +13,7 @@ const ResetPassword: React.FC = () => {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+axios.defaults.withCredentials = true;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -39,6 +39,7 @@ interface Favorite {
 const Favorites: React.FC = () => {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(false);
+  axios.defaults.withCredentials = true;
 
   const userId = useSelector((state: any) => state.auth.user?.id);
 

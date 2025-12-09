@@ -27,6 +27,7 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
   const userId = useSelector((state: any) => state.auth.user?.id);
   const socketRef = useRef<Socket | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  axios.defaults.withCredentials = true;
 
   const fetchNotifications = async () => {
     if (!userId) return;

@@ -49,6 +49,7 @@ const LeaseDetail: React.FC = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
+  axios.defaults.withCredentials = true;
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);

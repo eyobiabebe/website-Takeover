@@ -139,6 +139,8 @@ export default function MyListingDetail() {
   const [statusFilter, setStatusFilter] = useState<"all" | Applicant["status"]>("all");
   const [viewUser, setViewUser] = useState<Applicant | null>(null);
   const [isProceed, setIsProceed] = useState(false);
+  axios.defaults.withCredentials = true;
+
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -32,6 +32,7 @@ const MyTakeovers: React.FC = () => {
   const userId = useSelector((state: any) => state.auth.user?.id);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     const fetchLeases = async () => {

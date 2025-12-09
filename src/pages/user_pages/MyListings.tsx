@@ -26,6 +26,7 @@ const MyListings: React.FC = () => {
   const navigate = useNavigate();
 
   const userId = useSelector((state: any) => state.auth.user?.id);
+  axios.defaults.withCredentials = true;
 
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 

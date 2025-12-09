@@ -14,6 +14,7 @@ const Navbar: React.FC = () => {
   const [openNotification, setOpenNotification] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
+  axios.defaults.withCredentials = true;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

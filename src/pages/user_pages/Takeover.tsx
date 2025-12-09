@@ -35,7 +35,7 @@ const Takeover: React.FC = () => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isProceed, setIsProceed] = useState(false);
-
+axios.defaults.withCredentials = true;
 
 
   useEffect(() => {

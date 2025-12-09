@@ -24,7 +24,7 @@ const EditListing: React.FC = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: any) => state.auth.user?.id);
   const [deletedImages, setDeletedImages] = useState<{ [key: string]: string[] }>({});
-
+ axios.defaults.withCredentials = true;
 
   const [formData, setFormData] = useState<any>({
     userId: String(userId),

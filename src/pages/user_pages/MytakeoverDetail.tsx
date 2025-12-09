@@ -95,6 +95,7 @@ export default function MyTakeoverDetail() {
     const userId = useSelector((state: any) => state.auth.user?.id);
     const [isProceed, setIsProceed] = useState(false);
     const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const fetchTakeover = async () => {

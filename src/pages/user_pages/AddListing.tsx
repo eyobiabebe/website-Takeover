@@ -23,8 +23,7 @@ const apartmentSections = ["Living Room", "Kitchen", "Bedroom", "Bathroom"];
 const AddListing: React.FC = () => {
   const userId = useSelector((state: any) => state.auth.user?.id);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
-
-
+  axios.defaults.withCredentials = true;
 
   const handleSelectLocation = async (lat: number, lng: number) => {
     setLocation({ lat, lng });
@@ -96,9 +95,6 @@ const AddListing: React.FC = () => {
   const [loading2, setLoading2] = useState(false);
   const [loading3, setLoading3] = useState(false);
   const navigate = useNavigate();
-
-  
-    
 
 
   useEffect(() => {
@@ -780,9 +776,6 @@ const AddListing: React.FC = () => {
                 className="border rounded-lg p-2 w-full text-sm"
               />
             </div>
-
-
-
 
             {/* Image Sections */}
             <h1 className="text-lg font-bold">Upload {formData.type === 'apartment' ? 'Apartment' : 'Car'} Images</h1>

@@ -5,6 +5,7 @@ const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+axios.defaults.withCredentials = true;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

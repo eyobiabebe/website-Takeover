@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function checkProfileComplete(userId: string) {
 
-  const res = await axios.post('/api/profile', { userId });
+  const res = await axios.post('/api/profile', { userId }, { withCredentials: true });
 
   return await res.data.profile.isCompleted;
 }

@@ -38,6 +38,7 @@ function Messages() {
   const [loading, setLoading] = useState(true);
   const [showMessages, setShowMessages] = useState(false);
   const userId = useSelector((state: any) => state.auth.user?.id);
+  axios.defaults.withCredentials = true;
 
   const socketRef = useRef<Socket | null>(null);
 

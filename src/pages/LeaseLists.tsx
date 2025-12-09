@@ -45,6 +45,8 @@ const LeaseLists: React.FC = () => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000);
   const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
+
 
   const user = useSelector((state: any) => state.auth.user);
   const userId = user?.id;
