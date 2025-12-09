@@ -24,7 +24,7 @@ type Message = {
   conversationId?: number; // needed for socket receiveMessage
 };
 
-let socket: Socket;
+
 
 function Messages() {
   const [searchParams] = useSearchParams();
@@ -39,31 +39,36 @@ function Messages() {
   const [showMessages, setShowMessages] = useState(false);
   const userId = useSelector((state: any) => state.auth.user?.id);
 
+  const socketRef = useRef<Socket | null>(null);
+
   // --- Socket.IO setup ---
   useEffect(() => {
-    socket = io("https://backend-takeover-4.onrender.com"); // your backend socket server
-    socket.on("connect", () => {
-      console.log("Connected to socket server:", socket.id);
-    });
+  const s = io("https://backend-takeover-4.onrender.com");
+  socketRef.current = s;
+
+  s.on("connect", () => {
+    console.log("Connected to socket:", s.id);
+  });
 
     // Listen for incoming messages
-    socket.on("receiveMessage", (message: Message) => {
-      if (selectedConversation && message.conversationId === selectedConversation.id) {
-        setMessages(prev => [...prev, message]);
-      }
-    });
+    s.on("receiveMessage", (message: Message) => {
+    if (selectedConversation && message.conversationId === selectedConversation.id) {
+      setMessages(prev => [...prev, message]);
+    }
+  });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [selectedConversation]);
+     return () => {
+    s.disconnect();
+  };
+}, []);
 
   // Join room whenever selectedConversation changes
-  useEffect(() => {
-    if (selectedConversation) {
-      socket.emit("joinRoom", selectedConversation.id);
-    }
-  }, [selectedConversation]);
+ useEffect(() => {
+  if (selectedConversation && socketRef.current) {
+    socketRef.current.emit("joinRoom", selectedConversation.id);
+  }
+}, [selectedConversation]);
+
 
   // --- Fetch or create conversation from Lease Detail page ---
   useEffect(() => {
@@ -128,33 +133,34 @@ function Messages() {
 
   const handleBack = () => setShowMessages(false);
 
-  // --- Send message via Socket.IO ---
-  const handleSendMessage = (content: string) => {
-    if (!selectedConversation || !userId) return;
+ const handleSendMessage = (content: string) => {
+  if (!selectedConversation || !userId) return;
+  if (!socketRef.current) {
+    console.error("Socket not connected");
+    return;
+  }
 
-    const messageData = {
-      conversationId: selectedConversation.id,
-      senderId: userId,
-      content,
-    };
-
-    socket.emit("sendMessage", messageData);
-
-    // Optimistic update
-    setMessages(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        content,
-        sender: { id: userId, name: "" },
-        createdAt: new Date().toISOString(),
-        conversationId: selectedConversation.id,
-      }
-    ]);
-
-    // Optionally refresh conversations list
-    loadConversations();
+  const messageData = {
+    conversationId: selectedConversation.id,
+    senderId: userId,
+    content,
   };
+
+  socketRef.current.emit("sendMessage", messageData);
+
+  setMessages(prev => [
+    ...prev,
+    {
+      id: Date.now(),
+      content,
+      sender: { id: userId, name: "" },
+      createdAt: new Date().toISOString(),
+      conversationId: selectedConversation.id,
+    }
+  ]);
+
+  loadConversations();
+};
 
   if (loading) return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
