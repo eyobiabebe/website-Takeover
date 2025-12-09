@@ -42,6 +42,9 @@ const Profile = () => {
   const [uploading, setUploading] = useState(false);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
 
+  
+axios.defaults.withCredentials = true;
+
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [form, setForm] = useState<any>({
     phoneNumber: '',
@@ -67,7 +70,7 @@ const Profile = () => {
       try {
         console.log(user.id);
         
-        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id }, { withCredentials: true });
         setProfile(res.data.profile);
         setProfileImg(res.data.profile_image.image);
         setPreview(`${res.data.profile_image.image}`);
