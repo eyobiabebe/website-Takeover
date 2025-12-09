@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
   const fetchUnreadCount = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`/api/notifications/${userId}`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}`);
       const unread = res.data.filter((n: any) => !n.isRead).length;
       setUnreadCount(unread);
     } catch (err) {
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post("/api/users/logout", {}, { withCredentials: true });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`, {}, { withCredentials: true });
       if (res.status === 200) dispatch(logout());
     } catch (err) {
       console.error("Logout failed", err);
