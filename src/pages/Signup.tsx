@@ -7,7 +7,9 @@ import google from "../assets/google.jpg";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { motion } from "framer-motion"
 import axios from "axios";
-
+import { login } from "../lib/authSlice"
+import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
 
 const fadeVariant = {
   hidden: { opacity: 0, y: 30 },
@@ -25,6 +27,8 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -74,13 +78,37 @@ const Signup = () => {
 };
 
 
-  const handleGoogleSignUp = async () => {
-    try {
-      console.log("Google sign-up initiated");
-    } catch (error) {
-      console.error("Google sign-up error:", error);
-    }
-  };
+ 
+
+  const handleGoogleSignUp = async (credentialResponse: any) => {
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/google-mobile`,
+          { token: credentialResponse.credential }, { withCredentials: true }
+        );
+  
+        console.log("✅ Google login success:", res.data);
+        // Store JWT and redirect
+        // localStorage.setItem("token", res.data.token);
+        // Dispatch user only
+        console.log("Dispatching login with user data:", res.data);
+        dispatch(login(res.data));
+  
+        // Redirect
+        navigate("/profile");
+        toast.success("Login Successful");
+  
+      } catch (err: any) {
+        let message = "Google login failed";
+        if (err.response) message = err.response.data?.message || message;
+        setErrors({ general: message });
+        toast.error(message);
+        console.error("❌ Google login failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
 
   return (
     <div className="bg-[url('./assets/white-bg3.jpg')] bg-cover bg-center min-h-screen text-white">
