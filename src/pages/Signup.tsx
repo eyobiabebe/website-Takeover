@@ -3,13 +3,10 @@ import type React from "react"
 import { Mail, Eye, EyeOff, User, AlertCircle, CheckCircle } from "lucide-react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import google from "../assets/google.jpg";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { motion } from "framer-motion"
 import axios from "axios";
-import { login } from "../lib/authSlice"
-import { toast } from "react-toastify"
-import { useDispatch } from "react-redux"
+
 
 const fadeVariant = {
   hidden: { opacity: 0, y: 30 },
@@ -28,7 +25,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const dispatch = useDispatch()
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -80,35 +76,9 @@ const Signup = () => {
 
  
 
-  const handleGoogleSignUp = async (credentialResponse: any) => {
-      try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/users/google-mobile`,
-          { token: credentialResponse.credential }, { withCredentials: true }
-        );
+
   
-        console.log("✅ Google login success:", res.data);
-        // Store JWT and redirect
-        // localStorage.setItem("token", res.data.token);
-        // Dispatch user only
-        console.log("Dispatching login with user data:", res.data);
-        dispatch(login(res.data));
-  
-        // Redirect
-        navigate("/profile");
-        toast.success("Login Successful");
-  
-      } catch (err: any) {
-        let message = "Google login failed";
-        if (err.response) message = err.response.data?.message || message;
-        setErrors({ general: message });
-        toast.error(message);
-        console.error("❌ Google login failed:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
+       
 
   return (
     <div className="bg-[url('./assets/white-bg3.jpg')] bg-cover bg-center min-h-screen text-white">
@@ -289,22 +259,7 @@ const Signup = () => {
                 </div>
               </motion.div>
 
-              {/* Social Buttons */}
-              <motion.div custom={0.6} variants={fadeVariant} initial="hidden" animate="visible" className="flex gap-4 mt-4">
-                <button
-                  onClick={handleGoogleSignUp}
-                  className="w-full rounded-lg bg-white border border-green-500 text-gray-900 hover:scale-105 flex items-center justify-center gap-3 py-1 font-medium"
-                >
-                  <img src={google} alt="Google Logo" className="w-7 h-7 bg-white" />
-                  Google
-                </button>
-
-                {/* <button className="w-full rounded-lg bg-blue-500 text-white hover:scale-105 flex items-center justify-center gap-3 py-2 font-medium">
-                  <FaFacebook size={20} />
-                  Facebook
-                </button> */}
-              </motion.div>
-
+              
               <motion.div custom={0.7} variants={fadeVariant} initial="hidden" animate="visible" className="text-center text-sm text-gray-400 mt-4">
                 Already have an account?{" "}
                 <Link to="/login" className="text-yellow-600 hover:text-yellow-300 font-medium">
