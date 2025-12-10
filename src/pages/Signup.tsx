@@ -105,7 +105,7 @@ const Signup = () => {
         toast.error(message);
         console.error("❌ Google login failed:", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
   
