@@ -469,7 +469,7 @@ const Welcome = () => {
                     <Clock className="w-8 h-8 text-blue-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">Save Time</h3>
-                  <p className="text-gray-600">Quick matching algorithm connects you with the right people faster.</p>
+                  <p className="text-gray-600">Quick searching and filtering leases help you find the right people faster.</p>
                 </motion.div>
                 <motion.div
                   className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100"

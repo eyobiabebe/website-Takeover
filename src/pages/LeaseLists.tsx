@@ -129,7 +129,13 @@ const LeaseLists: React.FC = () => {
   };
 
   const uniqueLocations = Array.from(
-    new Set(listings.map((l) => l.location))
+    new Set(listings.map((l) => {
+      const parts = l.location.split(",").map(p => p.trim());
+
+  // City is always the 2nd segment in US-format addresses
+  return parts[1] || "";
+      
+    }))
   ).sort();
 
   const filteredListings = listings.filter((l) => {
@@ -137,14 +143,14 @@ const LeaseLists: React.FC = () => {
       field?.toLowerCase().includes(search.toLowerCase())
     );
 
-    const matchPrice = l.monthlyPrice >= minPrice && l.monthlyPrice <= maxPrice;
-
-
     const matchLocation =
       locationFilter === "" ||
-      l.location.toLowerCase() === locationFilter.toLowerCase();
+      l.location.split(",").map(p => p.trim())[1]?.toLowerCase() === locationFilter.toLowerCase();
 
-    return matchText && matchPrice && matchLocation;
+    const matchPrice =
+      l.monthlyPrice >= minPrice && l.monthlyPrice <= maxPrice;
+
+    return matchText && matchLocation && matchPrice;
   });
 
   const apartments = filteredListings.filter((l) => l.type === "apartment");
@@ -166,7 +172,7 @@ const LeaseLists: React.FC = () => {
   }
 
   return (
-   <div className="px-4 sm:px-8 md:px-12 lg:px-16 py-12 text-sm bg-[url('./assets/white-bg3.jpg')] bg-cover bg-center">
+   <div className="min-h-screen px-4 sm:px-8 md:px-12 lg:px-16 py-12 text-sm bg-[url('./assets/white-bg3.jpg')] bg-cover bg-center">
 
       <CompleteProfile
         isOpen={isWarningOpen}
@@ -177,7 +183,7 @@ const LeaseLists: React.FC = () => {
       </h1>
 
       {/* Filters */}
-      <div className="max-w-4xl mx-auto mb-10 flex md:flex-row justify-center items-start gap-4">
+      <div className="max-w-4xl mx-auto mb-10 flex md:flex-row flex-col justify-center items-start gap-4">
         <div>
           <input
             type="text"

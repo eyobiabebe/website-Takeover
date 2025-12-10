@@ -38,13 +38,13 @@ const Step: React.FC<StepProps> = ({ index, Icon, title, summary, details }) => 
 
 export default function HowItWorks() {
   const getInSteps: StepProps[] = [
-    { index: 0, Icon: UserPlus, title: "Create your account", summary: "Sign up & verify", details: "Register with email or SSO, verify your contact info." },
-    { index: 1, Icon: User, title: "Complete your profile", summary: "Add details & docs", details: "Fill personal info, preferences, and upload required documents." },
+    { index: 0, Icon: UserPlus, title: "Create your account", summary: "Sign up & verify", details: "Register with email, verify your contact info." },
+    { index: 1, Icon: User, title: "Complete your profile", summary: "Add details", details: "Fill personal info, preferences, and upload required profile image." },
     { index: 2, Icon: LayoutList, title: "Browse & filter listings", summary: "Filter by type, date, location", details: "Use filters and sorting. Save searches and favorite listings for quick access." },
     { index: 3, Icon: FileText, title: "View lease details", summary: "Inspect terms & docs", details: "Check full lease, costs, photos, and PDF documents." },
     { index: 4, Icon: MessageSquare, title: "Chat with the tenant", summary: "Ask clarifying questions", details: "Ask about parking, utilities, or move-out timelines." },
     { index: 5, Icon: Tag, title: "Apply to takeover", summary: "Submit application & docs", details: "Attach verification docs, desired move-in date, and optional references." },
-    { index: 6, Icon: CheckCircle, title: "Tenant accepts & complete paperwork", summary: "Agree terms & e-sign", details: "Receive confirmation and instructions. E-sign documents." },
+    { index: 6, Icon: CheckCircle, title: "Tenant accepts & complete paperwork", summary: "Agree terms", details: "Receive confirmation and finish up paper work phisically." },
     { index: 7, Icon: DownloadCloud, title: "Finalization & confirmation", summary: "Mark complete & download PDF", details: "Both parties get a completion notification and PDF record." }
   ];
 
