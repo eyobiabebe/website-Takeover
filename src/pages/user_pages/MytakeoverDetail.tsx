@@ -259,11 +259,11 @@ export default function MyTakeoverDetail() {
                                         <div className="flex gap-2 items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-1 w-fit">
                                             <PartyPopper size={20} />
                                             <p className="text-sm text-gray-600">Congragulation You have been accepted for this lease takeover.</p>
-                                            <button className="cursor-pointer inline-flex items-center gap-1 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 hover:bg-blue-200"
+                                            {/* <button className="cursor-pointer inline-flex items-center gap-1 rounded-md bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 hover:bg-blue-200"
                                                 onClick={() => { }}
                                             >
                                                 Download pdf
-                                            </button>
+                                            </button> */}
                                         </div>
                                     )}
                                     <button

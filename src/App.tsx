@@ -17,11 +17,10 @@ import Unauthorized from './components/Unauthorized';
 import Messages from './pages/user_pages/Messages';
 import EditListing from './pages/user_pages/EditListing';
 import { Slide, ToastContainer } from 'react-toastify';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Takeover from './pages/user_pages/Takeover';
 import Dashboard from './pages/user_pages/Dashbord';
 import MyListingDetail from './pages/user_pages/MyListingDetail';
-import Spinner from './components/Spinner';
 import Favorites from './pages/user_pages/Favorites';
 import VerfiyEmail from './pages/VerifyEmail'
 import { useDispatch } from 'react-redux';
@@ -37,7 +36,6 @@ import TermsPage from './components/TermsPage';
 
 function App() {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -54,19 +52,11 @@ function App() {
         }
       } catch (err) {
         dispatch(logout());
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     checkSession();
   }, [dispatch]);
-
-  if (loading) {
-    return (
-      <Spinner />
-    );
-  }
 
   return (
     <>
