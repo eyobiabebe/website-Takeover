@@ -44,7 +44,10 @@ function Messages() {
 
   // --- Socket.IO setup ---
   useEffect(() => {
-  const s = io("https://backend-takeover-4.onrender.com");
+  const s = io("https://backend-takeover-4.onrender.com", {
+  transports: ["websocket"] , 
+  withCredentials: true, 
+});
   socketRef.current = s;
 
   s.on("connect", () => {

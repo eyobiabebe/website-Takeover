@@ -45,13 +45,20 @@ const Login = () => {
         email: formData.email,
         password: formData.password,
       },
-        { withCredentials: true } // ✅ ensures cookie is saved
+        { 
+          withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      } 
       );
 
       console.log(res);
 
       if (res.status === 200) {
         console.log("✅ Login successful:", res.data);
+
+        if (res.data.token) {
+    localStorage.setItem("authToken", res.data.token);
+  }
         toast.success("Login Successfull")
         dispatch(login(res.data))
         // Redirect to dashboard
@@ -85,13 +92,17 @@ const Login = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users/google-mobile`,
-        { token: credentialResponse.credential }, { withCredentials: true }
+        { token: credentialResponse.credential }, {
+           withCredentials: true ,
+           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+          }
       );
 
       console.log("✅ Google login success:", res.data);
       // Store JWT and redirect
-      // localStorage.setItem("token", res.data.token);
-      // Dispatch user only
+      if (res.data.token) {
+      localStorage.setItem("authToken", res.data.token); // Save fallback
+    }
       console.log("Dispatching login with user data:", res.data);
       dispatch(login(res.data));
 

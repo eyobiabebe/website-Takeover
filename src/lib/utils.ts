@@ -8,7 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function checkProfileComplete(userId: string) {
 
-  const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId }, { withCredentials: true });
+  const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId }, { 
+    withCredentials: true ,
+    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+   });
 
   return await res.data.profile.isCompleted;
 }

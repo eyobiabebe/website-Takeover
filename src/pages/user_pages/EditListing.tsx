@@ -59,7 +59,12 @@ const EditListing: React.FC = () => {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`, { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`, { 
+          withCredentials: true ,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}` // Safari Fix
+        }
+       });
         const listing = res.data;
 
         setFormData({
@@ -246,7 +251,10 @@ const EditListing: React.FC = () => {
 
     try {
       await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+           "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${localStorage.getItem("authToken")}`
+         },
         withCredentials: true,
       });
       toast.success("Listing updated successfully!");

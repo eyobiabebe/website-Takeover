@@ -61,7 +61,11 @@ const Navbar: React.FC = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`, {}, { withCredentials: true });
-      if (res.status === 200) dispatch(logout());
+      if (res.status === 200) { 
+        localStorage.removeItem("authToken");
+         dispatch(logout());
+         navigate("/login");
+        }
     } catch (err) {
       console.error("Logout failed", err);
     }

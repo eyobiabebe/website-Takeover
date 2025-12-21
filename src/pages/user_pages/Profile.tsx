@@ -70,7 +70,10 @@ axios.defaults.withCredentials = true;
       try {
         console.log(user.id);
         
-        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id }, { withCredentials: true });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { userId: user?.id }, {
+           withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+         });
         setProfile(res.data.profile);
         setProfileImg(res.data.profile_image.image);
         setPreview(`${res.data.profile_image.image}`);
@@ -122,7 +125,12 @@ axios.defaults.withCredentials = true;
       console.log("Profile update data:", { userId: user?.id, data: form });
       const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, 
         { userId: user?.id, data: form },
-        { withCredentials: true });
+        { 
+          withCredentials: true,
+          headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}` // Safari Fix
+        }
+        });
 
       console.log("Profile update response:", res.data);
 
@@ -174,6 +182,7 @@ axios.defaults.withCredentials = true;
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/upload-image`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem("authToken")}` // Safari Fix
         },
         withCredentials: true,
       });
