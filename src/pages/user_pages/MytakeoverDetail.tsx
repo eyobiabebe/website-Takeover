@@ -137,13 +137,13 @@ export default function MyTakeoverDetail() {
         try {
             // Call backend to create a Stripe checkout session
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`,{
-                headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-            }, {
                 leaseId: takeover?.listing.id,
                 takeover_id: takeover?.id,
                 title: "Lease Takeover Fee",
                 type: "takeover_fee",
                 price: 5, // Example system fee
+            },{
+                headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
             });
 
             // Redirect user to Stripe Checkout

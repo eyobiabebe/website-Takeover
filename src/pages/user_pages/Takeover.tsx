@@ -58,9 +58,9 @@ axios.defaults.withCredentials = true;
     const getProfile = async () => {
       if (!userId) return;
       try {
-        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/userProfile`,{
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/userProfile`,{ userId },{
           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-        } ,{ userId });
+        });
         setProfile(res.data);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -96,19 +96,21 @@ axios.defaults.withCredentials = true;
     setLoading(true);   
     setIsProceed(false);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/findtakeover`,{
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/findtakeover`, 
+        { listingId: lease.id, userId: userId },
+        {
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      }, { listingId: lease.id, userId: userId })
+      })
       const takeover_id = res.data.id;
       // Call backend to create a Stripe checkout session
-      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`,{
-        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      }, {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`, {
         leaseId: lease.id,
         takeover_id: takeover_id,
         title: "Lease Takeover Fee",
         type: "takeover_fee",
         price: 5, // Example system fee
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
       });
 
       // Redirect user to Stripe Checkout

@@ -365,14 +365,14 @@ const AddListing: React.FC = () => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-listing-checkout`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-        },
-         {
         listingId,
         price: 10, // fixed or dynamic fee
         title: 'Listing Fee',
         type: 'listing_fee',
-      });
+      }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        }
+        );
 
       window.location.href = data.url; // redirect to Stripe
     } catch (err) {

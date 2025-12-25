@@ -64,9 +64,9 @@ const Favorites: React.FC = () => {
   const toggleFavorite = async (listingId: number) => {
     if (!userId) return;
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`,{
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, { userId, listingId },{
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      }, { userId, listingId });
+      });
       const { favorited } = res.data;
 
       if (!favorited) {

@@ -47,7 +47,9 @@ function Messages() {
     socket = io("https://backend-takeover-4.onrender.com",{
    transports: ["websocket"] , 
    withCredentials: true, 
-   headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+    auth: {
+    token: localStorage.getItem("authToken"), // fallback only
+  },
 });
 
     socket.on("connect", () => {
@@ -107,7 +109,10 @@ function Messages() {
           listingId: Number(listingId),
           senderId: userId,
           receiverId,
-        });
+        },{ 
+          withCredentials: true ,
+         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      });
 
         setConversations((prev) => [res.data, ...prev]);
         setSelectedConversation(res.data);
@@ -123,21 +128,19 @@ function Messages() {
   /* ---------------- LOAD CONVERSATIONS ---------------- */
   const loadConversations = async () => {
   try {
-    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations`,{ 
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations`,{ id: userId },{ 
           withCredentials: true ,
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      } , { id: userId });
+      } );
 
     // For each conversation, fetch last message
     const conversationsWithLastMessage = await Promise.all(
       res.data.map(async (conv: Conversation) => {
         try {
-          const msgRes = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conv.id}`,{ 
+          const msgRes = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conv.id}`,{ id: userId},{ 
           withCredentials: true ,
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      } , {
-            id: userId,
-          });
+      } );
 
           const messages = msgRes.data.messages || [];
           const lastMsg = messages[messages.length - 1];
@@ -175,11 +178,9 @@ function Messages() {
   /* ---------------- LOAD MESSAGES ---------------- */
   const loadMessages = async (conversationId: number) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conversationId}`,{ 
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conversationId}`,{id: userId},{ 
           withCredentials: true ,
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
-      } , {
-        id: userId,
       });
       setMessages(res.data.messages || []);
     } catch (err) {
