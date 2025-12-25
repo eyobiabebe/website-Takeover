@@ -45,9 +45,13 @@ function App() {
         // ✅ axios must send cookies
         const res = await axios.get("https://backend-takeover-4.onrender.com/api/users/me", {
           withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
         });
 
-        if (res.status === 200 && res.data.user) {
+        if (res.status === 200 ) {
+            if (res.data.token) {
+       localStorage.setItem("authToken", res.data.token);
+      }
           dispatch(login(res.data.user)); // put user in Redux
         } else {
           dispatch(logout());

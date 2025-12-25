@@ -39,7 +39,9 @@ const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
       if (!userId) return;
 
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/mylisting/${userId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/mylisting/${userId}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setLeases(res.data);
       } catch (err) {
         console.error("Failed to fetch user leases:", err);
@@ -80,7 +82,9 @@ const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 const confirmDeleteListing = async (id: number) => {
   try {
-    await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`);
+    await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${id}`,{
+      headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+    });
     setLeases(leases.filter((l) => l.id !== id)); // remove from UI
     setIsDeleteModalOpen(false);
   } catch (err) {

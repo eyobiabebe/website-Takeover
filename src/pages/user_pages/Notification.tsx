@@ -32,7 +32,9 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
   const fetchNotifications = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}`,{
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      });
       setNotifications(res.data);
     } catch (err) {
       console.error("Failed to fetch notifications", err);
@@ -41,7 +43,9 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const markAsRead = async (id: number) => {
     try {
-      await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/read/${id}`);
+      await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/read/${id}`,{
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      });
       setNotifications(prev =>
         prev.map(n => (n.id === id ? { ...n, isRead: true } : n))
       );
@@ -52,7 +56,9 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const markAllAsRead = async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}/read-all`);
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${userId}/read-all`,{
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      });
       setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (err) {
       console.error("Failed to mark all as read", err);
@@ -61,7 +67,9 @@ const NotificationSidebar: React.FC<Props> = ({ open, onClose }) => {
 
   const deleteNotification = async (id: number) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/notifications/${id}`,{
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      });
       setNotifications(prev => prev.filter(n => n.id !== id));
     } catch (err) {
       console.error("Failed to delete notification", err);

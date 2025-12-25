@@ -83,7 +83,7 @@ const Welcome = () => {
       setActiveTestimonial((prev) =>
         prev === testimonials.length - 1 ? 0 : prev + 1
       );
-    }, 5000); // 6 seconds
+    }, 5000); 
 
     return () => clearInterval(interval);
   }, [testimonials.length]);
@@ -131,7 +131,7 @@ const Welcome = () => {
                         <Link to="/dashboard" className="border-2 border-blue-600 text-blue-600 px-3 py-1 hover:scale-105 font-semibold hover:bg-blue-50 bg-transparent rounded-md">
                           Go to Dashboard
                         </Link>
-                        <Link to="/browse" className="border-2 border-blue-600 text-blue-600 px-3 py-1 hover:scale-105 font-semibold hover:bg-blue-50 bg-transparent rounded-md">
+                        <Link to="/leaseLists" className="border-2 border-blue-600 text-blue-600 px-3 py-1 hover:scale-105 font-semibold hover:bg-blue-50 bg-transparent rounded-md">
                           Browse Listings
                         </Link>
                       </>
@@ -164,280 +164,7 @@ const Welcome = () => {
             </div>
           </section>
 
-          {/* How It Works Section */}
-          {/* <section id="how-it-works" className="py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <motion.div
-                className="text-center mb-16"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple Steps to Success</h2>
-                <p className="text-xl text-gray-600">Get started with TakeOver in just three easy steps</p>
-              </motion.div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="bg-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <UserPlus className="w-8 h-8 text-gray-900" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">Create Account</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Sign up for free and complete your profile with verified information. Our secure process ensures trust
-                    from day one.
-                  </p>
-                </motion.div>
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Search className="w-8 h-8 text-green-600" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">Post or Browse</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    List your lease for transfer or browse available apartments. Our smart algorithm matches you with
-                    compatible options.
-                  </p>
-                </motion.div>
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <UserCheck className="w-8 h-8 text-purple-600" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">Connect & Transfer</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Message verified users, complete background checks, and finalize your lease transfer with confidence.
-                  </p>
-                </motion.div> */}
-          {/* </div> */}
-          {/* <div className="text-center mt-12">
-                {!user ? (
-                  <Link to="/signup">
-                    Get Started
-                  </Link>
-                ) : (
-                  <Link to="/dashboard">
-                    Go to Dashboard
-                  </Link>
-                )}
-              </div>
-            </div>
-          </section> */}
-
-          {/* Benefits Grid */}
-          {/* <section className="py-20 bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <motion.div
-                  className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                    <DollarSign className="w-8 h-8 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">Save Money</h3>
-                  <p className="text-gray-600">No broker fees or hidden costs. Save thousands on your lease transfer.</p>
-                </motion.div>
-                <motion.div
-                  className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                    <Clock className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">Save Time</h3>
-                  <p className="text-gray-600">Quick matching algorithm connects you with the right people faster.</p>
-                </motion.div>
-                <motion.div
-                  className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                    <Shield className="w-8 h-8 text-purple-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">Verified Users</h3>
-                  <p className="text-gray-600">Secure background checks ensure safe and trustworthy connections.</p>
-                </motion.div>
-                <motion.div
-                  className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                    <Headphones className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">24/7 Support</h3>
-                  <p className="text-gray-600">Our dedicated support team is always available to help you succeed.</p>
-                </motion.div>
-              </div>
-            </div>
-          </section>
-
-          {/* Features Showcase */}
-          {/* <section id="features" className="py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="space-y-20">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <h3 className="text-3xl font-bold text-gray-900 mb-6">Social Sharing Integration</h3>
-                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                      Maximize your listing's reach by sharing on Facebook Marketplace, Reddit, and other platforms. Our
-                      integrated sharing tools help you find the perfect match faster.
-                    </p>
-                    <ul className="space-y-3">
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        One-click sharing to multiple platforms
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Optimized listing formats for each platform
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Track engagement across all channels
-                      </li>
-                    </ul>
-                  </motion.div>
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <img
-                      src={social_sharing}
-                      alt="Social sharing feature - smartphone showing social media integration"
-                      className="w-76 h-80 object- rounded-xl shadow-lg "
-                    />
-                  </motion.div>
-                </div>
-
-                {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <motion.div
-                    className="order-2 lg:order-1 relative"
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <img
-                      src={background_check}
-                      alt="Background verification process with security badges"
-                      className="w-full h-auto object-cover rounded-xl shadow-lg"
-                    />
-                  </motion.div>
-                  <motion.div
-                    className="order-1 lg:order-2"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <h3 className="text-3xl font-bold text-gray-900 mb-6">Secure Background Verification</h3>
-                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                      Our comprehensive background check process ensures trust and transparency between all parties. Feel
-                      confident in every connection you make.
-                    </p>
-                    <ul className="space-y-3">
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Credit and employment verification
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Criminal background screening
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Identity verification and references
-                      </li>
-                    </ul>
-                  </motion.div>
-                </div> 
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <h3 className="text-3xl font-bold text-gray-900 mb-6">Smart Messaging System</h3>
-                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                      Communicate securely with potential matches through our built-in messaging platform. Keep all
-                      conversations organized and accessible.
-                    </p>
-                    <ul className="space-y-3">
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        End-to-end encrypted messaging
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Photo and document sharing
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                        Real-time notifications
-                      </li>
-                    </ul>
-                  </motion.div>
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                  >
-                    <img
-                      src={messaging_system}
-                      alt="Secure messaging system interface on mobile device"
-                      className="w-full h-auto object-cover rounded-xl shadow-lg"
-                    />
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-          </section> */}
-          {/* <PricingPage/> */}
+          
 
           {/* ================== Benefits Grid ================== */}
           <section className="py-20 bg-gray-50">
@@ -503,36 +230,7 @@ const Welcome = () => {
             </div>
           </section>
 
-          {/* ================== CATEGORIES ================== */}
-          {/* <section className="py-20 px-6">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-xl font-bold text-center mb-14">Browse by Category</h2>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                {[
-                  { title: "Car Leases", icon: CarFront, link: "/listings?type=car" },
-                  { title: "Apartment Leases", icon: Building, link: "/listings?type=apartment" }
-                ].map((cat, i) => (
-                  <motion.a
-                    key={i}
-                    href={cat.link}
-                    whileHover={{ scale: 1.02 }}
-                    className="p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-5"
-                  >
-                    <div className="p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-                      <cat.icon size={30} className="text-indigo-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">{cat.title}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                        Verified listings updated daily
-                      </p>
-                    </div>
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-          </section> */}
+       
 
           {/* ================== HOW IT WORKS PREVIEW ================== */}
           <section className="py-20 px-6 bg-gradient-to-b from-white to-slate-100 dark:from-slate-900 dark:to-slate-950">
@@ -592,36 +290,7 @@ const Welcome = () => {
           </section>
 
 
-          {/* ================== FEATURED LISTINGS (STATIC MOCKUP) ================== */}
-          {/* <section className="py-24 px-6 bg-slate-50 dark:bg-slate-900/40">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-14">Featured Listings</h2>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[1, 2, 3].map((i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm"
-                  >
-                    <div className="h-40 bg-slate-200 dark:bg-slate-700" />
-                    <div className="p-4">
-                      <h3 className="font-semibold">Sample Listing #{i}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                        $1,250 / month • 8 months left
-                      </p>
-                      <a
-                        href="/listing/example"
-                        className="text-indigo-600 dark:text-indigo-400 text-sm mt-3 inline-block"
-                      >
-                        View details →
-                      </a>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section> */}
+          
 
           {/* ================== WHY CHOOSE US ================== */}
           <section className="py-24 px-6">
@@ -664,30 +333,6 @@ const Welcome = () => {
             </div>
           </section>
 
-          {/* ================== TESTIMONIALS ================== */}
-          {/* <section className="py-24 px-6 bg-slate-50 dark:bg-slate-900/40">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-14">Testimonials</h2>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[
-                  "Found a new tenant in just 3 days. The process was unbelievably smooth!",
-                  "Took over a car lease and saved thousands. Highly recommended.",
-                  "The built-in chat and paperwork checklist made everything simple."
-                ].map((quote, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ scale: 1.02 }}
-                    className="p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"
-                  >
-                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                      “{quote}”
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section> */}
 
           {/* Testimonials Section */}
           <section id="testimonials" className="py-20 bg-gray-50">
@@ -835,32 +480,6 @@ const Welcome = () => {
             </div>
           </section>
 
-          {/* Final CTA Section */}
-          {/* <section className="py-20 bg-blue-600">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-4xl font-bold text-white mb-6">Ready to Transform Your Lease Experience?</h2>
-                <p className="text-lg text-blue-100 mb-8 leading-relaxed">
-                  Join thousands of successful users who've found their perfect lease match. Start your journey today with
-                  no upfront costs.
-                </p>
-                {!isAuthenticated ? (
-                  <Link to="/signup" className="px-4 py-2 hover:scale-105 bg-gradient-to-l from-[#3182ed] to-[#56d28e] text-white transition-colors duration-300 rounded">
-                    Sign Up Now
-                  </Link>
-                ) : (
-                  <Link to="/dashboard" className="px-4 py-2 hover:scale-105 bg-gradient-to-l from-[#3182ed] to-[#56d28e] text-white transition-colors duration-300 rounded">
-                    Go to Dashboard
-                  </Link>
-                )}
-              </motion.div>
-            </div>
-          </section> */}
         </motion.div>
       </div>
     </div>

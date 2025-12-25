@@ -146,7 +146,9 @@ export default function MyListingDetail() {
   useEffect(() => {
     const fetchLease = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setListing(res.data);
         console.log("Lease data:", res.data);
       } catch (error) {
@@ -158,7 +160,9 @@ export default function MyListingDetail() {
 
     const fetchApplicants = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/applicants/${leaseId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/applicants/${leaseId}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setApplicants(res.data);
         console.log("Applicants data:", res.data);
 
@@ -244,7 +248,9 @@ export default function MyListingDetail() {
       });
 
       if (result.isConfirmed) {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/reject/${id}`);
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/reject/${id}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setApplicants((prev) =>
           prev.map((a) =>
             a.id === id ? { ...a, status: "rejected" } : a
@@ -268,6 +274,8 @@ export default function MyListingDetail() {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-listing-checkout`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        },{
         listingId: listing.id,
         price: 10, // fixed or dynamic fee
         title: 'Listing Fee',
@@ -284,7 +292,9 @@ export default function MyListingDetail() {
   const handleComplete = async () => {
     if (!listing?.id) return toast.error("Missing listing ID.");
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/listings/complete`, { listingId: listing.id });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/listings/complete`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      },{ listingId: listing.id });
       if (res.data) {
         setListing(res.data.listing);
         toast.success("Listing completed successfully.");

@@ -12,6 +12,9 @@ const PaymentPage: React.FC = () => {
     try {
       // Call backend to create a Stripe checkout session
       const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-checkout-session`, {
+        withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      }, {
         leaseId,
         title: "Lease Takeover",
         price: 50, // Example system fee

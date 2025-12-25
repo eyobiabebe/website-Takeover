@@ -1,11 +1,10 @@
-// export default Messages;
-import { useState, useEffect, useRef } from 'react';
-import ConversationList from './ConversationList';
-import MessageView from './MessageView';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
-import { io, Socket } from 'socket.io-client';
+import { useState, useEffect, useRef } from "react";
+import ConversationList from "./ConversationList";
+import MessageView from "./MessageView";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 
 type Conversation = {
   id: number;
@@ -14,6 +13,8 @@ type Conversation = {
   participant1: { id: string; name: string };
   participant2: { id: string; name: string };
   created_at: string;
+  lastMessage?: string;
+  lastMessageTime?: string;
 };
 
 type Message = {
@@ -21,10 +22,10 @@ type Message = {
   content: string;
   sender: { id: string; name: string };
   createdAt: string;
-  conversationId?: number; // needed for socket receiveMessage
+  conversationId?: number;
 };
 
-
+let socket: Socket;
 
 function Messages() {
   const [searchParams] = useSearchParams();
@@ -32,149 +33,231 @@ function Messages() {
   const listingId = searchParams.get("listingId");
   const receiverId = searchParams.get("receiverId");
 
+  const userId = useSelector((state: any) => state.auth.user?.id);
+
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [selectedConversation, setSelectedConversation] =
+    useState<Conversation | null>(null);
   const [showMessages, setShowMessages] = useState(false);
-  const userId = useSelector((state: any) => state.auth.user?.id);
-  axios.defaults.withCredentials = true;
+  const [loading, setLoading] = useState(true);
 
-  const socketRef = useRef<Socket | null>(null);
-
-  // --- Socket.IO setup ---
+  /* ---------------- SOCKET SETUP ---------------- */
   useEffect(() => {
-  const s = io("https://backend-takeover-4.onrender.com", {
-  transports: ["websocket"] , 
-  withCredentials: true, 
+    socket = io("https://backend-takeover-4.onrender.com",{
+   transports: ["websocket"] , 
+   withCredentials: true, 
+   headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
 });
-  socketRef.current = s;
 
-  s.on("connect", () => {
-    console.log("Connected to socket:", s.id);
-  });
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
 
-    // Listen for incoming messages
-    s.on("receiveMessage", (message: Message) => {
-    if (selectedConversation && message.conversationId === selectedConversation.id) {
-      setMessages(prev => [...prev, message]);
+    socket.on("receiveMessage", (message: Message) => {
+      // 1️⃣ Add message to message view if open
+      if (
+        selectedConversation &&
+        message.conversationId === selectedConversation.id
+      ) {
+        setMessages((prev) => [...prev, message]);
+      }
+
+      // 2️⃣ Update conversation list (last message + time)
+      setConversations((prev) => {
+        const updated = prev.map((conv) =>
+          conv.id === message.conversationId
+            ? {
+                ...conv,
+                lastMessage: message.content,
+                lastMessageTime: message.createdAt,
+              }
+            : conv
+        );
+
+        // 3️⃣ Move updated conversation to top
+        return updated.sort(
+          (a, b) =>
+            new Date(b.lastMessageTime || 0).getTime() -
+            new Date(a.lastMessageTime || 0).getTime()
+        );
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [selectedConversation]);
+
+  /* ---------------- JOIN ROOM ---------------- */
+  useEffect(() => {
+    if (selectedConversation) {
+      socket.emit("joinRoom", selectedConversation.id);
     }
-  });
+  }, [selectedConversation]);
 
-     return () => {
-    s.disconnect();
-  };
-}, []);
-
-  // Join room whenever selectedConversation changes
- useEffect(() => {
-  if (selectedConversation && socketRef.current) {
-    socketRef.current.emit("joinRoom", selectedConversation.id);
-  }
-}, [selectedConversation]);
-
-
-  // --- Fetch or create conversation from Lease Detail page ---
+  /* ---------------- CREATE OR GET CONVERSATION ---------------- */
   useEffect(() => {
     if (hasRunRef.current || !listingId || !receiverId || !userId) return;
     hasRunRef.current = true;
 
-    const fetchOrCreateConversation = async () => {
+    const fetchConversation = async () => {
       try {
         const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations/get-or-create`, {
           listingId: Number(listingId),
           senderId: userId,
           receiverId,
         });
-        setConversations(prev => [...prev, res.data]);
+
+        setConversations((prev) => [res.data, ...prev]);
         setSelectedConversation(res.data);
         setShowMessages(true);
       } catch (err) {
-        console.error("Failed to create or get conversation", err);
+        console.error(err);
       }
     };
 
-    fetchOrCreateConversation();
+    fetchConversation();
   }, [listingId, receiverId, userId]);
 
-  // Load conversations
+  /* ---------------- LOAD CONVERSATIONS ---------------- */
+  const loadConversations = async () => {
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations`,{ 
+          withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      } , { id: userId });
+
+    // For each conversation, fetch last message
+    const conversationsWithLastMessage = await Promise.all(
+      res.data.map(async (conv: Conversation) => {
+        try {
+          const msgRes = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conv.id}`,{ 
+          withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      } , {
+            id: userId,
+          });
+
+          const messages = msgRes.data.messages || [];
+          const lastMsg = messages[messages.length - 1];
+
+          return {
+            ...conv,
+            lastMessage: lastMsg?.content,
+            lastMessageTime: lastMsg?.createdAt,
+          };
+        } catch {
+          return conv;
+        }
+      })
+    );
+
+    setConversations(
+      conversationsWithLastMessage.sort(
+        (a, b) =>
+          new Date(b.lastMessageTime || 0).getTime() -
+          new Date(a.lastMessageTime || 0).getTime()
+      )
+    );
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
   useEffect(() => {
     loadConversations();
   }, []);
 
-  // Load messages when selectedConversation changes
+  /* ---------------- LOAD MESSAGES ---------------- */
+  const loadMessages = async (conversationId: number) => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conversationId}`,{ 
+          withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      } , {
+        id: userId,
+      });
+      setMessages(res.data.messages || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     if (selectedConversation) {
       loadMessages(selectedConversation.id);
     }
   }, [selectedConversation]);
 
-  const loadConversations = async () => {
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/conversations`, { id: userId });
-      setConversations(res.data || []);
-    } catch (error) {
-      console.error('Error loading conversations:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  /* ---------------- SEND MESSAGE ---------------- */
+  const handleSendMessage = (content: string) => {
+    if (!selectedConversation || !userId) return;
 
-  const loadMessages = async (conversationId: number) => {
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/messages/${conversationId}`, { id: userId });
-      setMessages(res.data.messages || []);
-    } catch (error) {
-      console.error('Error loading messages:', error);
-    }
+    const payload = {
+      conversationId: selectedConversation.id,
+      senderId: userId,
+      content,
+    };
+
+    socket.emit("sendMessage", payload);
+
+    // Optimistic UI
+    const now = new Date().toISOString();
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        content,
+        sender: { id: userId, name: "" },
+        createdAt: now,
+        conversationId: selectedConversation.id,
+      },
+    ]);
+
+    // Update conversation list instantly
+    setConversations((prev) =>
+      prev
+        .map((conv) =>
+          conv.id === selectedConversation.id
+            ? {
+                ...conv,
+                lastMessage: content,
+                lastMessageTime: now,
+              }
+            : conv
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.lastMessageTime || 0).getTime() -
+            new Date(a.lastMessageTime || 0).getTime()
+        )
+    );
   };
 
   const handleSelectConversation = (id: number) => {
-    const conversation = conversations.find(c => c.id === id);
-    setSelectedConversation(conversation || null);
+    const conv = conversations.find((c) => c.id === id) || null;
+    setSelectedConversation(conv);
     setShowMessages(true);
   };
 
   const handleBack = () => setShowMessages(false);
 
- const handleSendMessage = (content: string) => {
-  if (!selectedConversation || !userId) return;
-  if (!socketRef.current) {
-    console.error("Socket not connected");
-    return;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center text-gray-500">
+        Loading...
+      </div>
+    );
   }
-
-  const messageData = {
-    conversationId: selectedConversation.id,
-    senderId: userId,
-    content,
-  };
-
-  socketRef.current.emit("sendMessage", messageData);
-
-  setMessages(prev => [
-    ...prev,
-    {
-      id: Date.now(),
-      content,
-      sender: { id: userId, name: "" },
-      createdAt: new Date().toISOString(),
-      conversationId: selectedConversation.id,
-    }
-  ]);
-
-  loadConversations();
-};
-
-  if (loading) return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-gray-600">Loading...</div>
-    </div>
-  );
 
   return (
     <div className="h-screen bg-gray-100 flex pt-16">
-      <div className={`${showMessages ? 'hidden md:flex' : 'flex'} w-full md:w-auto`}>
+      <div className={`${showMessages ? "hidden md:flex" : "flex"} w-full md:w-auto`}>
         <ConversationList
           conversations={conversations}
           selectedId={selectedConversation?.id || null}
@@ -182,7 +265,7 @@ function Messages() {
         />
       </div>
 
-      <div className={`${showMessages ? 'flex' : 'hidden md:flex'} flex-1`}>
+      <div className={`${showMessages ? "flex" : "hidden md:flex"} flex-1`}>
         <MessageView
           conversation={selectedConversation}
           messages={messages}
