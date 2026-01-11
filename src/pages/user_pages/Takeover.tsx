@@ -41,7 +41,9 @@ axios.defaults.withCredentials = true;
   useEffect(() => {
     const fetchLease = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setLease(res.data);
       } catch (error) {
         console.error("Failed to fetch lease:", error);
@@ -56,7 +58,9 @@ axios.defaults.withCredentials = true;
     const getProfile = async () => {
       if (!userId) return;
       try {
-        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/userProfile`, { userId });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile/userProfile`,{ userId },{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setProfile(res.data);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -92,7 +96,11 @@ axios.defaults.withCredentials = true;
     setLoading(true);   
     setIsProceed(false);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/findtakeover`, { listingId: lease.id, userId: userId })
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/findtakeover`, 
+        { listingId: lease.id, userId: userId },
+        {
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+      })
       const takeover_id = res.data.id;
       // Call backend to create a Stripe checkout session
       const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`, {
@@ -101,6 +109,8 @@ axios.defaults.withCredentials = true;
         title: "Lease Takeover Fee",
         type: "takeover_fee",
         price: 5, // Example system fee
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
       });
 
       // Redirect user to Stripe Checkout
@@ -170,7 +180,7 @@ axios.defaults.withCredentials = true;
               <img
                 src={
                   lease?.images && Object.keys(lease.images).length > 0
-                    ? `http://localhost:3000/uploads/${lease.images[Object.keys(lease.images)[0]][0]}`
+                    ? `${lease.images[Object.keys(lease.images)[0]][0]}`
                     : "https://via.placeholder.com/400x250"
                 }
                 alt={lease?.title}

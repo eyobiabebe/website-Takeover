@@ -103,7 +103,9 @@ export default function MyTakeoverDetail() {
             try {
                 console.log(id);
 
-                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/${id}`);
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/takeover/${id}`,{
+                    headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+                });
                 setTakeover(res.data);
                 console.log("Takeover data:", res.data);
             } catch (error) {
@@ -134,12 +136,14 @@ export default function MyTakeoverDetail() {
         setIsProceed(false);
         try {
             // Call backend to create a Stripe checkout session
-            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`, {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-takeover-checkout`,{
                 leaseId: takeover?.listing.id,
                 takeover_id: takeover?.id,
                 title: "Lease Takeover Fee",
                 type: "takeover_fee",
                 price: 5, // Example system fee
+            },{
+                headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
             });
 
             // Redirect user to Stripe Checkout

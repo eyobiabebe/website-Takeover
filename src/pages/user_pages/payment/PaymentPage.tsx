@@ -15,6 +15,9 @@ const PaymentPage: React.FC = () => {
         leaseId,
         title: "Lease Takeover",
         price: 50, // Example system fee
+      }, {
+        withCredentials: true ,
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
       });
 
       // Redirect user to Stripe Checkout

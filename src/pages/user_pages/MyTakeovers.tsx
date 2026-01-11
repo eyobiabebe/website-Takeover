@@ -39,7 +39,9 @@ const MyTakeovers: React.FC = () => {
       if (!userId) return;
 
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/mytakeovers/${userId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/mytakeovers/${userId}`,{
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        });
         setTakeovers(res.data);
         console.log(res.data);
         

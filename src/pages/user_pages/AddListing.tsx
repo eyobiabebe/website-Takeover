@@ -245,6 +245,7 @@ const AddListing: React.FC = () => {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/listings`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem("authToken")}`
         },
         withCredentials: true,
       });
@@ -290,6 +291,7 @@ const AddListing: React.FC = () => {
       const res = await axios.post('/api/listings/draft', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem("authToken")}`
         },
         withCredentials: true,
       });
@@ -362,12 +364,15 @@ const AddListing: React.FC = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        "/api/payments/create-listing-checkout", {
+        `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-listing-checkout`, {
         listingId,
         price: 10, // fixed or dynamic fee
         title: 'Listing Fee',
         type: 'listing_fee',
-      });
+      }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
+        }
+        );
 
       window.location.href = data.url; // redirect to Stripe
     } catch (err) {

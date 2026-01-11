@@ -61,7 +61,8 @@ const LeaseDetail: React.FC = () => {
     const fetchLease = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/listings/${leaseId}`, {
-          withCredentials: true
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` }
         });
         setLease(res.data);
         console.log("Lease data:", res.data);
